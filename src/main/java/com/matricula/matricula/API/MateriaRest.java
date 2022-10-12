@@ -43,11 +43,11 @@ public class MateriaRest {
     }
 
     // Metodo post para el create
-    @PostMapping("/{idPeriodo}")
+    @PostMapping
     @CrossOrigin(origins = "*", maxAge = 3600)
-    public ResponseEntity create(@RequestBody Materia materia, @PathVariable("idPeriodo") Long idPeriodo) {
-        Periodo p = periodoRepositorio.findById(idPeriodo).orElseThrow(() -> new RuntimeException("Error: Periodo no encontrado."));
-        materia.setPeriodo(p);
+    public ResponseEntity create(@RequestBody Materia materia) {
+       // Periodo p = periodoRepositorio.findById(idPeriodo).orElseThrow(() -> new RuntimeException("Error: Periodo no encontrado."));
+       // materia.setPeriodo(p);
         return ResponseEntity.ok(materiaRepositorio.save(materia));
     }
 
