@@ -45,21 +45,29 @@ public class MateriaRest {
     // Metodo post para el create
     @PostMapping
     @CrossOrigin(origins = "*", maxAge = 3600)
-    public ResponseEntity create(@RequestBody Materia materia) {
-       // Periodo p = periodoRepositorio.findById(idPeriodo).orElseThrow(() -> new RuntimeException("Error: Periodo no encontrado."));
-       // materia.setPeriodo(p);
-        return ResponseEntity.ok(materiaRepositorio.save(materia));
+    public ResponseEntity create(@RequestBody MateriaPeriodo periodoMateria) {
+        Materia m = new Materia();
+        m.setDescripcion(periodoMateria.getDescripcion());
+        m.setCupos(periodoMateria.getCupos());
+        Periodo p = periodoRepositorio.findById(periodoMateria.getIdPeriodo()).get();
+        m.setPeriodo(p);
+        return ResponseEntity.ok(materiaRepositorio.save(m));
     }
 
     //Metodo put para el update
     @PutMapping("/{id}")
     @CrossOrigin(origins = "*", maxAge = 3600)
-    public ResponseEntity<Materia> update(@PathVariable("id") Long id, @RequestBody Materia materia) {
+    public ResponseEntity<Materia> update(@PathVariable("id") Long id, @RequestBody MateriaPeriodo periodoMateria) {
         if (!materiaRepositorio.findById(id).isPresent()) {
             return ResponseEntity.notFound().build();
         } else {
-            materia.setId(id);
-            return ResponseEntity.ok(materiaRepositorio.save(materia));
+            Materia m = new Materia();
+            m.setId(id);
+            m.setDescripcion(periodoMateria.getDescripcion());
+            m.setCupos(periodoMateria.getCupos());
+            Periodo p = periodoRepositorio.findById(periodoMateria.getIdPeriodo()).get();
+            m.setPeriodo(p);
+            return ResponseEntity.ok(materiaRepositorio.save(m));
         }
     }
 
@@ -70,8 +78,74 @@ public class MateriaRest {
         if (!materiaRepositorio.findById(id).isPresent()) {
             return ResponseEntity.notFound().build();
         } else {
+            // desvinculo la materia del periodo
+            Materia m = materiaRepositorio.findById(id).get();
+            m.setPeriodo(null);
+            materiaRepositorio.save(m);
+            System.out.println(m.getPeriodo());
+            // eliminino la materia
             materiaRepositorio.deleteById(id);
             return ResponseEntity.ok().build();
         }
+    }
+
+    @GetMapping(path = "/periodo/{id}")
+    @CrossOrigin(origins = "*", maxAge = 3600)
+    public ResponseEntity<List<Materia>> findAllByPeriodoId(@PathVariable("id") long idPeriodo) {
+        List<Materia> list = new ArrayList<Materia>();
+        materiaRepositorio.findAllByPeriodoId(idPeriodo).forEach(e -> list.add(e));
+        return ResponseEntity.ok(list);
+    }
+
+}
+
+// clase para asignar un periodo a una materia en el post
+class MateriaPeriodo {
+
+    public String descripcion;
+    public int cupos;
+
+    // id del periodo que ya existe
+    public Long idPeriodo;
+
+    public MateriaPeriodo(){
+
+    }
+
+    // getters y setters
+    public String getDescripcion() {
+
+        return descripcion;
+
+    }
+
+    public void setDescripcion(String descripcion) {
+
+        this.descripcion = descripcion;
+
+    }
+
+    public int getCupos() {
+
+        return cupos;
+
+    }
+
+    public void setCupos(int cupos) {
+
+        this.cupos = cupos;
+
+    }
+
+    public Long getIdPeriodo() {
+
+        return idPeriodo;
+
+    }
+
+    public void setIdPeriodo(Long idPeriodo) {
+
+        this.idPeriodo = idPeriodo;
+
     }
 }

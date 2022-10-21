@@ -131,6 +131,15 @@ public class LogAOP {
         logRepositorio.save(log);
     }
 
+    @Before("execution(* com.matricula.matricula.Repository.MateriaRepositorio.findAllByPeriodoId(..))")
+    public void logbeforeV(JoinPoint jointPoint){
+        Log log = new Log();
+        log.setFecha(new Date());
+        log.setMetodo(jointPoint.getSignature().getName());
+        log.setTransaccion("Periodo");
+        logRepositorio.save(log);
+    }
+
     // Transacciones de Matricula
 
     @Before("execution(* com.matricula.matricula.Repository.MatriculaRepositorio.findAll(..))")

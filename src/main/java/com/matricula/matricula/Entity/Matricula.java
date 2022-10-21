@@ -31,34 +31,50 @@ public class Matricula implements Serializable {
 
     // setters y getters
     public Long getId() {
+
         return id;
+
     }
 
     public void setId(Long id) {
+
         this.id = id;
+
     }
 
     public Periodo getPeriodo() {
+
         return periodo;
+
     }
 
     public void setPeriodo(Periodo periodo) {
+
         this.periodo = periodo;
+
     }
 
     public Materia getMateria() {
+
         return materia;
+
     }
 
     public void setMateria(Materia materia) {
+
         this.materia = materia;
+
     }
 
     public Persona getPersona() {
+
         return persona;
+
     }
 
     public void setPersona(Persona persona) {
+
         this.persona = persona;
+
     }
 }

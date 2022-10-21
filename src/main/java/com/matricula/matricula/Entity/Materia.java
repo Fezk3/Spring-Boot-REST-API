@@ -14,12 +14,9 @@ public class Materia implements Serializable{
 
     private int cupos;
 
-    @Column(name = "id_periodo")
-    private long id_periodo;
-
     // relacion con la tabla periodo
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "id_periodo", referencedColumnName = "id", insertable = false, updatable = false)
+    @JoinColumn(name = "id_periodo", referencedColumnName = "id")
     private Periodo periodo;
 
     // constructor vacio
@@ -27,15 +24,6 @@ public class Materia implements Serializable{
     }
 
     // setters y getters
-
-
-    public long getId_periodo() {
-        return id_periodo;
-    }
-
-    public void setId_periodo(long id_periodo) {
-        this.id_periodo = id_periodo;
-    }
 
     public Periodo getPeriodo() {
 
