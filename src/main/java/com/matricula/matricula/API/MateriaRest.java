@@ -97,6 +97,7 @@ public class MateriaRest {
         return ResponseEntity.ok(list);
     }
 
+
 }
 
 // clase para asignar un periodo a una materia en el post
