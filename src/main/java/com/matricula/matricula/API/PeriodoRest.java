@@ -80,7 +80,7 @@ public class PeriodoRest {
 
         // si existe una materia asociada al periodo, no se puede eliminar
         if (!periodoRepositorio.findById(id).isPresent() || checkMateriaPeriodo(id)) {
-            return ResponseEntity.notFound().build();
+            return null;
         } else {
             periodoRepositorio.deleteById(id);
             return ResponseEntity.ok().build();

@@ -80,7 +80,7 @@ public class PersonaRest {
 
         // no elimina la persona si tiene una matricula
         if (!personaRepositorio.findById(id).isPresent() || checkMatriculaPersona(id)) {
-            return ResponseEntity.notFound().build();
+            return null;
         }
         personaRepositorio.deleteById(id);
         return ResponseEntity.ok().build();
