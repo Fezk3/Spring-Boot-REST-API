@@ -105,12 +105,16 @@ public class MatriculaRest {
 
             // se obtiene la matricula a actualizar
             Matricula matricula = matriculaRepositorio.findById(id).get();
-            // sumando un cupo de la materia que se habia matriculado
             Materia anterior = matricula.getMateria();
+            Materia nueva = materiaRepositorio.findById(matriculaPPM.getIdMateria()).get();
+            // check si nueva tiene cupos disponibles
+            if (nueva.getCupos() == 0){
+                return ResponseEntity.notFound().build();
+            }
+            // sumando un cupo de la materia que se desmatricula
             anterior.setCupos(anterior.getCupos() + 1);
             materiaRepositorio.save(anterior);
-            // decremento de los cupos de la nueva materia matriculada
-            Materia nueva = materiaRepositorio.findById(matriculaPPM.getIdMateria()).get();
+            // decrementando un cupo de la materia a matricular
             nueva.setCupos(nueva.getCupos() - 1);
             materiaRepositorio.save(nueva);
             // asiganacion de los nuevos valores de la matricula
