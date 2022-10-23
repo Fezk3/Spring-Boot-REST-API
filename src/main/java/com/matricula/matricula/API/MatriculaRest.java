@@ -121,22 +121,24 @@ public class MatriculaRest {
             Materia anterior = matricula.getMateria();
             Materia nueva = materiaRepositorio.findById(matriculaPPM.getIdMateria()).get();
             // check si nueva tiene cupos disponibles y no esta matriculada previamente en la materia nueva
-            if (nueva.getCupos() == 0 && !checkMatriculaPersona(matriculaPPM.getIdPersona(), matriculaPPM.getIdMateria(), matriculaPPM.getIdPeriodo())) {
-                return ResponseEntity.notFound().build();
-            }
-            // sumando un cupo de la materia que se desmatricula
-            anterior.setCupos(anterior.getCupos() + 1);
-            materiaRepositorio.save(anterior);
-            // decrementando un cupo de la materia a matricular
-            nueva.setCupos(nueva.getCupos() - 1);
-            materiaRepositorio.save(nueva);
-            // asiganacion de los nuevos valores de la matricula
-            matricula.setId(id);
-            matricula.setMateria(nueva);
-            matricula.setPersona(personaRepositorio.findById(matriculaPPM.getIdPersona()).get());
-            matricula.setPeriodo(periodoRepositorio.findById(matriculaPPM.getIdPeriodo()).get());
-            return ResponseEntity.ok(matriculaRepositorio.save(matricula));
+            if (nueva.getCupos() > 0 && !checkMatriculaPersona(matriculaPPM.getIdPersona(), matriculaPPM.getIdMateria(), matriculaPPM.getIdPeriodo())) {
 
+                // sumando un cupo de la materia que se desmatricula
+                anterior.setCupos(anterior.getCupos() + 1);
+                materiaRepositorio.save(anterior);
+                // decrementando un cupo de la materia a matricular
+                nueva.setCupos(nueva.getCupos() - 1);
+                materiaRepositorio.save(nueva);
+                // asiganacion de los nuevos valores de la matricula
+                matricula.setId(id);
+                matricula.setMateria(nueva);
+                matricula.setPersona(personaRepositorio.findById(matriculaPPM.getIdPersona()).get());
+                matricula.setPeriodo(periodoRepositorio.findById(matriculaPPM.getIdPeriodo()).get());
+                return ResponseEntity.ok(matriculaRepositorio.save(matricula));
+
+            }
+
+            return ResponseEntity.notFound().build();
         }
 
     }
