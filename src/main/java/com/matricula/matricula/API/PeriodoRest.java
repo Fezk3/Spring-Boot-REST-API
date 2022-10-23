@@ -1,7 +1,9 @@
 package com.matricula.matricula.API;
 
+import com.matricula.matricula.Entity.Materia;
 import com.matricula.matricula.Entity.Periodo;
 import com.matricula.matricula.Repository.PeriodoRepositorio;
+import com.matricula.matricula.Repository.MateriaRepositorio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +18,21 @@ public class PeriodoRest {
 
     @Autowired
     private PeriodoRepositorio periodoRepositorio;
+
+    @Autowired
+    private MateriaRepositorio materiaRepositorio;
+
+    // metodo que checkea si existe una materia asociada a un periodo
+    public boolean checkMateriaPeriodo(Long idPeriodo) {
+        List<Materia> list = new ArrayList<Materia>();
+        materiaRepositorio.findAll().forEach(e -> list.add(e));
+        for (Materia m : list) {
+            if (m.getPeriodo().getId() == idPeriodo) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     //Metodo get para el read
     @GetMapping
@@ -60,7 +77,9 @@ public class PeriodoRest {
     @DeleteMapping("/{id}")
     @CrossOrigin(origins = "*", maxAge = 3600)
     public ResponseEntity delete(@PathVariable("id") Long id) {
-        if (!periodoRepositorio.findById(id).isPresent()) {
+
+        // si existe una materia asociada al periodo, no se puede eliminar
+        if (!periodoRepositorio.findById(id).isPresent() || checkMateriaPeriodo(id)) {
             return ResponseEntity.notFound().build();
         } else {
             periodoRepositorio.deleteById(id);
