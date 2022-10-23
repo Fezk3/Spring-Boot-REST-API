@@ -32,6 +32,18 @@ public class MatriculaRest {
     @Autowired
     private MateriaRepositorio materiaRepositorio;
 
+    // metodo que checkea si una persona ya esta matriculada en una materia en un periodo determinado
+    public boolean checkMatriculaPersona(Long idPersona, Long idMateria, Long idPeriodo) {
+        List<Matricula> list = new ArrayList<Matricula>();
+        matriculaRepositorio.findAll().forEach(e -> list.add(e));
+        for (Matricula m : list) {
+            if (m.getPersona().getId() == idPersona && m.getMateria().getId() == idMateria && m.getPeriodo().getId() == idPeriodo) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     //Metodo get para el read
     @GetMapping
     @CrossOrigin(origins = "*", maxAge = 3600)
@@ -69,7 +81,8 @@ public class MatriculaRest {
 
         int cupos = m.getCupos();
 
-        if(cupos > 0){
+        // solo hace matricula si hay cupos y si la persona no esta matriculada en la materia previamente
+        if(cupos > 0 && !checkMatriculaPersona(matriculaPPM.getIdPersona(), matriculaPPM.getIdMateria(), matriculaPPM.getIdPeriodo())) {
 
             Persona p = personaRepositorio.findById(matriculaPPM.getIdPersona()).get();
             Periodo pe = periodoRepositorio.findById(matriculaPPM.getIdPeriodo()).get();
@@ -107,8 +120,8 @@ public class MatriculaRest {
             Matricula matricula = matriculaRepositorio.findById(id).get();
             Materia anterior = matricula.getMateria();
             Materia nueva = materiaRepositorio.findById(matriculaPPM.getIdMateria()).get();
-            // check si nueva tiene cupos disponibles
-            if (nueva.getCupos() == 0){
+            // check si nueva tiene cupos disponibles y no esta matriculada previamente en la materia nueva
+            if (nueva.getCupos() == 0 && !checkMatriculaPersona(matriculaPPM.getIdPersona(), matriculaPPM.getIdMateria(), matriculaPPM.getIdPeriodo())) {
                 return ResponseEntity.notFound().build();
             }
             // sumando un cupo de la materia que se desmatricula
