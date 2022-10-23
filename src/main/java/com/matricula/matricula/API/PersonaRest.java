@@ -17,6 +17,18 @@ public class PersonaRest {
     @Autowired
     private PersonaRepositorio personaRepositorio;
 
+    // metodo que checkea si una persona tiene una matricula || quizas se debe poner en cascada :/
+    public boolean checkMatriculaPersona(Long idPersona) {
+        List<Persona> list = new ArrayList<Persona>();
+        personaRepositorio.findAll().forEach(e -> list.add(e));
+        for (Persona p : list) {
+            if (p.getId() == idPersona) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     //Metodo get para el read
     @GetMapping
     @CrossOrigin(origins = "*", maxAge = 3600)
@@ -60,7 +72,9 @@ public class PersonaRest {
     @DeleteMapping("/{id}")
     @CrossOrigin(origins = "*", maxAge = 3600)
     public ResponseEntity<Persona> delete(@PathVariable("id") long id) {
-        if (!personaRepositorio.findById(id).isPresent()) {
+
+        // no elimina la persona si tiene una matricula
+        if (!personaRepositorio.findById(id).isPresent() || checkMatriculaPersona(id)) {
             return ResponseEntity.notFound().build();
         }
         personaRepositorio.deleteById(id);
