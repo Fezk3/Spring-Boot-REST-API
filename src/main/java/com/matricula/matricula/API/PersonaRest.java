@@ -2,6 +2,8 @@ package com.matricula.matricula.API;
 
 import com.matricula.matricula.Entity.Persona;
 import com.matricula.matricula.Repository.PersonaRepositorio;
+import com.matricula.matricula.Repository.MatriculaRepositorio;
+import com.matricula.matricula.Entity.Matricula;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,12 +19,15 @@ public class PersonaRest {
     @Autowired
     private PersonaRepositorio personaRepositorio;
 
-    // metodo que checkea si una persona tiene una matricula || quizas se debe poner en cascada :/
+    @Autowired
+    private MatriculaRepositorio matriculaRepositorio;
+
+    // metodo que checkea si una persona se encuentra asociada a una matricula
     public boolean checkMatriculaPersona(Long idPersona) {
-        List<Persona> list = new ArrayList<Persona>();
-        personaRepositorio.findAll().forEach(e -> list.add(e));
-        for (Persona p : list) {
-            if (p.getId() == idPersona) {
+        List<Matricula> list = new ArrayList<Matricula>();
+        matriculaRepositorio.findAll().forEach(e -> list.add(e));
+        for (Matricula m : list) {
+            if (m.getPersona().getId() == idPersona) {
                 return true;
             }
         }
