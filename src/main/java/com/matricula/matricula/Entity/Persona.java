@@ -2,6 +2,7 @@ package com.matricula.matricula.Entity;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.List;
 
 import com.matricula.matricula.Entity.Materia;
@@ -45,4 +46,8 @@ public class Persona implements Serializable {
         this.nombre = nombre;
     }
 
+    public Collection<Object> getMatriculas() {
+        Collection<Object> matriculas = null;
+        return matriculas;
+    }
 }
