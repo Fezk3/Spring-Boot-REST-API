@@ -37,7 +37,7 @@ public class LogAOP {
         logRepositorio.save(log);
     }
 
-    @Before("execution(* com.matricula.matricula.Repository.PersonaRepositorio.delete(..))")
+    @Before("execution(* com.matricula.matricula.Repository.PersonaRepositorio.deleteById(..))")
     public void logbeforeV3(JoinPoint jointPoint){
         Log log = new Log();
         log.setFecha(new Date());
@@ -75,7 +75,7 @@ public class LogAOP {
         logRepositorio.save(log);
     }
 
-    @Before("execution(* com.matricula.matricula.Repository.PeriodoRepositorio.delete(..))")
+    @Before("execution(* com.matricula.matricula.Repository.PeriodoRepositorio.deleteById(..))")
     public void logbeforeV7(JoinPoint jointPoint){
         Log log = new Log();
         log.setFecha(new Date());
@@ -113,7 +113,7 @@ public class LogAOP {
         logRepositorio.save(log);
     }
 
-    @Before("execution(* com.matricula.matricula.Repository.MateriaRepositorio.delete(..))")
+    @Before("execution(* com.matricula.matricula.Repository.MateriaRepositorio.deleteById(..))")
     public void logbeforeV11(JoinPoint jointPoint){
         Log log = new Log();
         log.setFecha(new Date());
@@ -160,7 +160,7 @@ public class LogAOP {
         logRepositorio.save(log);
     }
 
-    @Before("execution(* com.matricula.matricula.Repository.MatriculaRepositorio.delete(..))")
+    @Before("execution(* com.matricula.matricula.Repository.MatriculaRepositorio.deleteById(..))")
     public void logbeforeV15(JoinPoint jointPoint){
         Log log = new Log();
         log.setFecha(new Date());

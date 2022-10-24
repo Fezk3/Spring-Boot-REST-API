@@ -37,8 +37,4 @@ public class Periodo implements Serializable {
         this.descripcion = descripcion;
     }
 
-    public Collection<Object> getMaterias() {
-        Collection<Object> materias = null;
-        return materias;
-    }
 }

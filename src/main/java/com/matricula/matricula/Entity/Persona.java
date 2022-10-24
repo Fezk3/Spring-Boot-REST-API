@@ -46,8 +46,4 @@ public class Persona implements Serializable {
         this.nombre = nombre;
     }
 
-    public Collection<Object> getMatriculas() {
-        Collection<Object> matriculas = null;
-        return matriculas;
-    }
 }

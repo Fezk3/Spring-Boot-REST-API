@@ -1,6 +1,8 @@
 package com.matricula.matricula.API;
 
+import com.matricula.matricula.Entity.Matricula;
 import com.matricula.matricula.Entity.Persona;
+import com.matricula.matricula.Repository.MatriculaRepositorio;
 import com.matricula.matricula.Repository.PersonaRepositorio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +18,22 @@ public class PersonaRest {
 
     @Autowired
     private PersonaRepositorio personaRepositorio;
+
+    @Autowired
+    private MatriculaRepositorio matriculaRepositorio;
+
+
+    // metodo que checkea si una persona se encuentra asociada a una matricula
+    public boolean checkMatriculaPersona(Long idPersona) {
+        List<Matricula> list = new ArrayList<Matricula>();
+        matriculaRepositorio.findAll().forEach(e -> list.add(e));
+        for (Matricula m : list) {
+            if (m.getPersona().getId() == idPersona) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     //Metodo get para el read
     @GetMapping
@@ -74,7 +92,7 @@ public class PersonaRest {
         if (!personaRepositorio.findById(id).isPresent()) {
             return ResponseEntity.notFound().build();
         }
-        if (personaRepositorio.findById(id).get().getMatriculas().isEmpty()) {
+        if (!checkMatriculaPersona(id)) {
             personaRepositorio.deleteById(id);
             return ResponseEntity.ok().build();
         } else {

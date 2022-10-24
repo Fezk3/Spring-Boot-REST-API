@@ -73,12 +73,4 @@ public class Materia implements Serializable{
 
     }
 
-
-    public Collection<Object> getMatriculas() {
-
-            Collection<Object> matriculas = null;
-
-            return matriculas;
-
-    }
 }

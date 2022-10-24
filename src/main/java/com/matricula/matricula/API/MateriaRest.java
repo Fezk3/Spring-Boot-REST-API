@@ -1,8 +1,10 @@
 package com.matricula.matricula.API;
 
 import com.matricula.matricula.Entity.Materia;
+import com.matricula.matricula.Entity.Matricula;
 import com.matricula.matricula.Repository.MateriaRepositorio;
 import com.matricula.matricula.Entity.Periodo;
+import com.matricula.matricula.Repository.MatriculaRepositorio;
 import com.matricula.matricula.Repository.PeriodoRepositorio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +23,22 @@ public class MateriaRest {
 
     @Autowired
     private PeriodoRepositorio periodoRepositorio;
+
+    @Autowired
+    private MatriculaRepositorio matriculaRepositorio;
+
+    public boolean checkMatriculaMateria(Long idMateria) {
+        List<Matricula> list = new ArrayList<Matricula>();
+        matriculaRepositorio.findAll().forEach(e -> list.add(e));
+        for (Matricula m : list) {
+            if (m.getMateria().getId() == idMateria) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
 
     //Metodo get para el read
     @GetMapping
@@ -104,7 +122,13 @@ public class MateriaRest {
         if (!materiaRepositorio.findById(id).isPresent()) {
             return ResponseEntity.notFound().build();
         } else {
-            if (materiaRepositorio.findById(id).get().getMatriculas().isEmpty()) {
+            if (!checkMatriculaMateria(id)) {
+                // desvinculo la materia del periodo
+                Materia m = materiaRepositorio.findById(id).get();
+                m.setPeriodo(null);
+                materiaRepositorio.save(m);
+                System.out.println(m.getPeriodo());
+                // eliminino la materia
                 materiaRepositorio.deleteById(id);
                 return ResponseEntity.ok().build();
             } else {

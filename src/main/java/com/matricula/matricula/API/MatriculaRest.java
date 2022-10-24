@@ -161,7 +161,7 @@ public class MatriculaRest {
             matricula.setMateria(null);
             matricula.setPersona(null);
             matricula.setPeriodo(null);
-            matriculaRepositorio.save(matricula);
+           // matriculaRepositorio.save(matricula);
             // elimino la matricula
             matriculaRepositorio.deleteById(id);
             return ResponseEntity.ok().build();
