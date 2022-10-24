@@ -68,4 +68,21 @@ public class PeriodoRest {
         }
     }
 
+    //metodo delete que verifica si el periodo tiene materias
+    @DeleteMapping("/delete/{id}")
+    @CrossOrigin(origins = "*", maxAge = 3600)
+    public ResponseEntity deletePeriodo(@PathVariable("id") Long id) {
+        if (!periodoRepositorio.findById(id).isPresent()) {
+            return ResponseEntity.notFound().build();
+        } else {
+            if (periodoRepositorio.findById(id).get().getMaterias().isEmpty()) {
+                periodoRepositorio.deleteById(id);
+                return ResponseEntity.ok().build();
+            } else {
+                return ResponseEntity.badRequest().build();
+            }
+        }
+    }
+
+
 }

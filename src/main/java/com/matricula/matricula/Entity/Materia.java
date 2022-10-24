@@ -2,6 +2,7 @@ package com.matricula.matricula.Entity;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Collection;
 
 @Entity
 public class Materia implements Serializable{
@@ -69,6 +70,15 @@ public class Materia implements Serializable{
     public void setCupos(int cupos) {
 
         this.cupos = cupos;
+
+    }
+
+
+    public Collection<Object> getMatriculas() {
+
+            Collection<Object> matriculas = null;
+
+            return matriculas;
 
     }
 }

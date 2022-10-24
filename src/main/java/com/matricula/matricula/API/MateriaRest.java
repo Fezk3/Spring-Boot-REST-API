@@ -97,6 +97,24 @@ public class MateriaRest {
         return ResponseEntity.ok(list);
     }
 
+    //metodo delete que verifica si la materia tiene matriculas
+    @DeleteMapping("/verificar/{id}")
+    @CrossOrigin(origins = "*", maxAge = 3600)
+    public ResponseEntity deleteMateria(@PathVariable("id") Long id) {
+        if (!materiaRepositorio.findById(id).isPresent()) {
+            return ResponseEntity.notFound().build();
+        } else {
+            if (materiaRepositorio.findById(id).get().getMatriculas().isEmpty()) {
+                materiaRepositorio.deleteById(id);
+                return ResponseEntity.ok().build();
+            } else {
+                return ResponseEntity.badRequest().build();
+            }
+        }
+    }
+
+
+
 }
 
 // clase para asignar un periodo a una materia en el post

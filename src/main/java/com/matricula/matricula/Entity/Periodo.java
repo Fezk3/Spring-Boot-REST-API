@@ -5,6 +5,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.io.Serializable;
+import java.util.Collection;
 
 @Entity
 public class Periodo implements Serializable {
@@ -34,5 +35,10 @@ public class Periodo implements Serializable {
 
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
+    }
+
+    public Collection<Object> getMaterias() {
+        Collection<Object> materias = null;
+        return materias;
     }
 }
