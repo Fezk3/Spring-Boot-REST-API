@@ -70,7 +70,7 @@ public class PersonaRest {
     //metodo delete que verifica si la persona tiene matriculas
     @DeleteMapping("/verificar/{id}")
     @CrossOrigin(origins = "*", maxAge = 3600)
-    public ResponseEntity<Persona> deleteVerificar(@PathVariable("id") long id) {
+    public ResponseEntity<Persona> deletePersona(@PathVariable("id") long id) {
         if (!personaRepositorio.findById(id).isPresent()) {
             return ResponseEntity.notFound().build();
         }
